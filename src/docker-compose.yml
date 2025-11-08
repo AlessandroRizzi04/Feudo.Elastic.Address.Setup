@@ -1,0 +1,14 @@
+services:
+  feudo.elastic.address.setup:
+    image: ${DOCKER_REGISTRY-}feudoelasticaddresssetup
+    build:
+      context: .
+      dockerfile: Feudo.Elastic.Address.Setup/Dockerfile
+    networks:
+      - feudo_bridge_network
+    mem_limit: 512m
+
+networks:
+  feudo_bridge_network:
+    name: feudo_bridge_network
+    external: true

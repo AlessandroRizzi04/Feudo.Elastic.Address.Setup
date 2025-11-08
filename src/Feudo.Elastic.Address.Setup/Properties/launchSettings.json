@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Feudo.Elastic.Location.Setup": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
