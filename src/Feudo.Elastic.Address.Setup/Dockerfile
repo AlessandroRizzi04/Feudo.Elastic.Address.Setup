@@ -10,6 +10,11 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["Feudo.Elastic.Address.Setup/Feudo.Elastic.Address.Setup.csproj", "Feudo.Elastic.Address.Setup/"]
+
+ARG GITHUB_TOKEN
+COPY ["Feudo.Elastic.Address.Setup/nuget.config", "Feudo.Elastic.Address.Setup/"]
+
 RUN dotnet restore "./Feudo.Elastic.Address.Setup/Feudo.Elastic.Address.Setup.csproj"
 COPY . .
 WORKDIR "/src/Feudo.Elastic.Address.Setup"

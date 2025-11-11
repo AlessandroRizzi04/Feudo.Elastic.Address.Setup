@@ -13,6 +13,7 @@ var builder = Host.CreateApplicationBuilder(args);
 IConfiguration configuration = builder.Configuration;
 
 AddressElasticServicesConfigurations addressElasticServiceConfiguration = configuration.GetSection("Elasticsearch").Get<AddressElasticServicesConfigurations>();
+OsmConfigurations osmConfigurations = configuration.GetSection("Osm").Get<OsmConfigurations>();
 ElasticIndexConfigurations elasticIndex = configuration.GetSection("ElasticsearchIndexes").Get<ElasticIndexConfigurations>();
 
 builder.Services.AddSingleton<IAddressPointElasticServiceFactory, AddressPointElasticServiceFactory>(
@@ -43,6 +44,7 @@ builder.Services.AddSingleton<IOsmWayElasticServiceFactory, OsmWayElasticService
     sp => new OsmWayElasticServiceFactory(addressElasticServiceConfiguration, elasticIndex.OsmWayIndex)
 );
 
+builder.Services.AddSingleton<OsmConfigurations>(osmConfigurations);
 builder.Services.AddTransient<IOsmService, OsmService>();
 builder.Services.AddTransient<IAddressSetup, AddressSetup>();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,18 @@ namespace Feudo.Elastic.Address.Setup.Services
 
         public async Task Index(string osmFilePath)
         {
-            using var fileStream = File.OpenRead(osmFilePath);
+            Stream fileStream;
+            if (osmFilePath.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                using var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync(osmFilePath, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+                fileStream = await response.Content.ReadAsStreamAsync();
+            }
+            else
+            {
+                fileStream = File.OpenRead(osmFilePath);
+            }
             var source = new PBFOsmStreamSource(fileStream);
 
             var osmNodeElasticService = _osmNodeElasticServiceFactory.Create();
